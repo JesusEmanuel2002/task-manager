@@ -2,21 +2,23 @@ import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 
 import Home from '../pages/Home'
-import TaskDetails from '../pages/TaskDetails'
 import CreateTask from '../pages/CreateTask'
 import EditTask from '../pages/EditTask'
-import Login from '../pages/Login'
+import TaskDetails from '../pages/TaskDetails'
 import Register from '../pages/Register'
+import Login from '../pages/Login'
+import AdminPanel from '../pages/AdminPanel'
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/task/:id" element={<TaskDetails />} />
       <Route path="/create" element={<CreateTask />} />
       <Route path="/edit/:id" element={<EditTask />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/task/:id" element={<TaskDetails />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/admin" element={<AdminPanel />} />
     </Routes>
   )
 }

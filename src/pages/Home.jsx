@@ -28,22 +28,29 @@ const Home = () => {
       <h1>Lista de Tareas</h1>
 
       {currentUser ? (
-        <p>
-          Sesión iniciada como: <strong>{currentUser.name}</strong> (
-          {currentUser.role})
-        </p>
-      ) : (
-        <p>No has iniciado sesión</p>
-      )}
-
-      <Link to="/create">Crear nueva tarea</Link> <br />
-      {!currentUser && (
         <>
+          <p>
+            Sesión iniciada como: <strong>{currentUser.name}</strong> (
+            {currentUser.role})
+          </p>
+          <Link to="/create">Crear nueva tarea</Link>
+          {currentUser.role === 'admin' && (
+            <>
+              {' | '}
+              <Link to="/admin">Ir al Panel de Administración</Link>
+            </>
+          )}
+          <br />
+        </>
+      ) : (
+        <>
+          <p>No has iniciado sesión</p>
           <Link to="/login">Iniciar sesión</Link> |{' '}
           <Link to="/register">Registrarse</Link>
         </>
       )}
 
+      <hr />
       {tasks.map((task) => (
         <TaskCard key={task.id} task={task} />
       ))}
