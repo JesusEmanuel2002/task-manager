@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { deleteTask } from '../redux/tasksSlice'
 import { deleteTaskApi } from '../api/tasksApi'
 import { useNavigate } from 'react-router-dom'
@@ -7,6 +7,11 @@ import { useNavigate } from 'react-router-dom'
 const TaskCard = ({ task }) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const currentUser = useSelector((state) => state.user.currentUser)
+
+    const isOwner = currentUser?.id === task.userId
+    const isAdmin = currentUser?.role === 'admin'
+    const canEdit = isOwner || isAdmin
 
     const handleDelete = async () => {
         try {
@@ -25,8 +30,14 @@ const TaskCard = ({ task }) => {
         <div style={styles.card}>
             <h3>{task.title}</h3>
             <p>Estado: {task.completed ? '✅ Completada' : '❌ Pendiente'}</p>
-            <button onClick={handleEdit}>Editar</button>
-            <button onClick={handleDelete}>Eliminar</button>
+            <p>Creada por usuario ID: {task.userId}</p>
+
+            {canEdit && (
+                <>
+                    <button onClick={handleEdit}>Editar</button>
+                    <button onClick={handleDelete}>Eliminar</button>
+                </>
+            )}
         </div>
     )
 }

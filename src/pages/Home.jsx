@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setTasks } from '../redux/tasksSlice'
 import { fetchTasks } from '../api/tasksApi'
 import TaskCard from '../components/TaskCard'
+import { Link } from 'react-router-dom'
 
 const Home = () => {
   const dispatch = useDispatch()
   const tasks = useSelector((state) => state.tasks.tasks)
+  const currentUser = useSelector((state) => state.user.currentUser)
 
   useEffect(() => {
     const loadTasks = async () => {
@@ -23,7 +25,25 @@ const Home = () => {
 
   return (
     <div>
-      <h1>Página principal: Lista de Tareas</h1>
+      <h1>Lista de Tareas</h1>
+
+      {currentUser ? (
+        <p>
+          Sesión iniciada como: <strong>{currentUser.name}</strong> (
+          {currentUser.role})
+        </p>
+      ) : (
+        <p>No has iniciado sesión</p>
+      )}
+
+      <Link to="/create">Crear nueva tarea</Link> <br />
+      {!currentUser && (
+        <>
+          <Link to="/login">Iniciar sesión</Link> |{' '}
+          <Link to="/register">Registrarse</Link>
+        </>
+      )}
+
       {tasks.map((task) => (
         <TaskCard key={task.id} task={task} />
       ))}
