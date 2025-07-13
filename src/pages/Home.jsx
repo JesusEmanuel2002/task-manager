@@ -4,6 +4,7 @@ import { setTasks } from '../redux/tasksSlice'
 import { fetchTasks } from '../api/tasksApi'
 import TaskCard from '../components/TaskCard'
 import { Link } from 'react-router-dom'
+import PageWrapper from '../components/PageWrapper'
 
 const Home = () => {
   const dispatch = useDispatch()
@@ -24,14 +25,13 @@ const Home = () => {
   }, [dispatch])
 
   return (
-    <div>
+    <PageWrapper>
       <h1>Lista de Tareas</h1>
 
       {currentUser ? (
         <>
           <p>
-            Sesión iniciada como: <strong>{currentUser.name}</strong> (
-            {currentUser.role})
+            Sesión iniciada como: <strong>{currentUser.name}</strong> ({currentUser.role})
           </p>
           <Link to="/create">Crear nueva tarea</Link>
           {currentUser.role === 'admin' && (
@@ -40,7 +40,6 @@ const Home = () => {
               <Link to="/admin">Ir al Panel de Administración</Link>
             </>
           )}
-          <br />
         </>
       ) : (
         <>
@@ -54,7 +53,7 @@ const Home = () => {
       {tasks.map((task) => (
         <TaskCard key={task.id} task={task} />
       ))}
-    </div>
+    </PageWrapper>
   )
 }
 
