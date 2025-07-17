@@ -1,54 +1,56 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { loginUser } from '../redux/userSlice'
 import { useNavigate, Link } from 'react-router-dom'
+import PageWrapper from '../components/PageWrapper'
 
+// Página de inicio de sesión de usuarios
 const Login = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const currentUser = useSelector((state) => state.user.currentUser)
 
+  // Estados del formulario
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  // Manejar el envío del formulario de login
   const handleSubmit = (e) => {
     e.preventDefault()
-
     dispatch(loginUser({ email, password }))
-
-    // Verificar si el login fue exitoso
-    setTimeout(() => {
-      if (currentUser !== null) {
-        navigate('/')
-      } else {
-        alert('Correo o contraseña incorrectos')
-      }
-    }, 100)
+    navigate('/')
   }
 
   return (
-    <div>
-      <h1>Iniciar Sesión</h1>
+    <PageWrapper>
+      <h2>Iniciar Sesión</h2>
+
       <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Correo electrónico"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <br />
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <br />
+        <label>
+          Correo:
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </label>
+
+        <label>
+          Contraseña:
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </label>
+
         <button type="submit">Iniciar Sesión</button>
       </form>
-      <Link to="/">Volver al inicio</Link>
-    </div>
+
+      {/* Enlace a la página de registro */}
+      <p>¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link></p>
+    </PageWrapper>
   )
 }
 

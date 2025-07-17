@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    tasks: [], // Lista de tareas
+  tasks: [], // Lista de Tareas
 }
 
 const tasksSlice = createSlice({
@@ -9,21 +9,24 @@ const tasksSlice = createSlice({
     initialState,
     reducers: {
         setTasks: (state, action) => {
+            // Reemplaza todas las tareas (usado al cargar desde API)
             state.tasks = action.payload
         },
         addTask: (state, action) => {
+            // Agrega una nueva tarea
             state.tasks.push(action.payload)
         },
         updateTask: (state, action) => {
-            const updatedTask = action.payload
-            const index = state.tasks.findIndex(task => task.id === updatedTask.id)
+            // Modifica una tarea existente
+            const updated = action.payload
+            const index = state.tasks.findIndex((task) => task.id === updated.id)
             if (index !== -1) {
-                state.tasks[index] = updatedTask
+                state.tasks[index] = updated
             }
         },
         deleteTask: (state, action) => {
-            const taskId = action.payload
-            state.tasks = state.tasks.filter(task => task.id !== taskId)
+            // Elimina una tarea por ID
+            state.tasks = state.tasks.filter((task) => task.id !== action.payload)
         },
     },
 })

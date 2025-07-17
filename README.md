@@ -9,8 +9,8 @@ Este proyecto es una aplicación de gestión de tareas construida con **React**,
 1. **Clona el repositorio**
 
 ```bash
-git clone https://github.com/tu-usuario/nombre-del-repo.git
-cd nombre-del-repo
+git clone https://github.com/JesusEmanuel2002/task-manager.git
+cd task-manager
 ````
 
 2. **Instala las dependencias**
@@ -75,6 +75,21 @@ src/
 * **Usuario regular**: solo puede modificar sus propias tareas
 * **Animaciones** con Framer Motion (páginas y tarjetas)
 * **Protección de rutas** mediante validaciones en los componentes
+
+---
+
+## 🎨 Estilos y Animaciones
+
+Se incorporaron estilos personalizados y animaciones para mejorar la presentación visual y la experiencia del usuario:
+
+- Se creó un archivo central de estilos `index.css` que contiene las clases para tarjetas (`.task-card`),  formularios, botones, contenedores de página (`.page-wrapper`), y más.
+- Se utilizaron clases CSS en lugar de estilos en línea para mantener el código más limpio y reutilizable.
+- Se implementaron animaciones con `framer-motion`:
+- En componentes individuales como `TaskCard`, para animaciones suaves al renderizarse.
+- En el componente `PageWrapper`, que envuelve cada página, aplicando transiciones de entrada y salida.
+
+Esto asegura una interfaz moderna, clara, con buena estructura visual y una experiencia de usuario fluida.
+
 
 ---
 

@@ -1,77 +1,88 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams, useNavigate, Link } from 'react-router-dom'
-import { updateTask as updateTaskApi } from '../api/tasksApi'
 import { updateTask } from '../redux/tasksSlice'
+import { updateTaskApi } from '../api/tasksApi'
+import { useNavigate, useParams, Link } from 'react-router-dom'
+import PageWrapper from '../components/PageWrapper'
 
+// Página para editar una tarea específica por ID
 const EditTask = () => {
-  const { id } = useParams()
-  const navigate = useNavigate()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { id } = useParams() // ID extraído de la URL
+  const taskId = parseInt(id)
+  const tasks = useSelector((state) => state.tasks.tasks)
 
-  const task = useSelector((state) =>
-    state.tasks.tasks.find((t) => t.id === parseInt(id))
-  )
+  // Buscar la tarea en la lista actual
+  const taskToEdit = tasks.find((t) => t.id === taskId)
 
+  // Estados locales del formulario
   const [title, setTitle] = useState('')
   const [completed, setCompleted] = useState(false)
 
+  // Cargar datos iniciales al montar el componente
   useEffect(() => {
-    if (task) {
-      setTitle(task.title)
-      setCompleted(task.completed)
+    if (taskToEdit) {
+      setTitle(taskToEdit.title)
+      setCompleted(taskToEdit.completed)
     }
-  }, [task])
+  }, [taskToEdit])
 
+  // Maneja el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     const updated = {
-      ...task,
+      ...taskToEdit,
       title,
       completed,
     }
 
     try {
-      await updateTaskApi(updated)
-      dispatch(updateTask(updated))
-      navigate('/')
+      await updateTaskApi(updated) // llamada a la API
+      dispatch(updateTask(updated)) // actualizar Redux
+      navigate('/') // volver al Home
     } catch (error) {
       console.error('Error al actualizar tarea:', error)
     }
   }
 
-  if (!task) {
-    return (
-      <div>
-        <p>Tarea no encontrada</p>
-        <Link to="/">Volver al inicio</Link>
-      </div>
-    )
+  // Si no se encontró la tarea, mostrar mensaje
+  if (!taskToEdit) {
+    return <PageWrapper><p>Tarea no encontrada.</p></PageWrapper>
   }
 
   return (
-    <div>
-      <h1>Editar Tarea</h1>
+    <PageWrapper>
+      <h2>Editar Tarea</h2>
+
+      {/* Formulario prellenado con datos de la tarea */}
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
         <label>
+          Título:
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+        </label>
+
+        <label>
+          ¿Completada?
           <input
             type="checkbox"
             checked={completed}
             onChange={(e) => setCompleted(e.target.checked)}
           />
-          Completada
         </label>
-        <button type="submit">Guardar cambios</button>
+
+        <button type="submit">Guardar Cambios</button>
       </form>
-      <Link to="/">Volver al inicio</Link>
-    </div>
+
+      {/* Enlace para regresar al inicio */}
+      <Link to="/" className="btn">Volver al inicio</Link>
+    </PageWrapper>
   )
 }
 

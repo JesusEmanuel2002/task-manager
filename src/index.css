@@ -1,0 +1,88 @@
+/* Estilos globales */
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+/* Botones */
+button, .btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover, .btn:hover {
+  background-color: #0056b3;
+}
+
+/* Formularios */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+  margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Tarjetas de tareas */
+.task-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #fff;
+}
+
+/* Lista de tareas */
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Detalles de tarea */
+.task-details {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* Lista de usuarios en AdminPanel */
+.user-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.user-card {
+  background-color: #fff;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* Contenedor general de las páginas */
+.page-wrapper {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}

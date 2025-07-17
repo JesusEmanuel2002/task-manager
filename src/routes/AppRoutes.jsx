@@ -9,6 +9,7 @@ import Register from '../pages/Register'
 import Login from '../pages/Login'
 import AdminPanel from '../pages/AdminPanel'
 
+// Manejador de rutas de la app
 const AppRoutes = () => {
   return (
     <Routes>

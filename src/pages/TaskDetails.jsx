@@ -1,31 +1,34 @@
 import React from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import PageWrapper from '../components/PageWrapper'
 
+// Página para mostrar los detalles completos de una tarea
 const TaskDetails = () => {
-  const { id } = useParams()
-  const task = useSelector((state) =>
-    state.tasks.tasks.find((t) => t.id === parseInt(id))
-  )
+  const { id } = useParams() // obtenemos el ID de la tarea desde la URL
+  const taskId = parseInt(id)
+  const tasks = useSelector((state) => state.tasks.tasks)
+
+  const task = tasks.find((t) => t.id === taskId)
 
   if (!task) {
-    return (
-      <div>
-        <h2>Tarea no encontrada</h2>
-        <Link to="/">Volver al inicio</Link>
-      </div>
-    )
+    return <PageWrapper><p>Tarea no encontrada.</p></PageWrapper>
   }
 
   return (
-    <div>
-      <h1>Detalles de la Tarea</h1>
-      <p><strong>ID:</strong> {task.id}</p>
-      <p><strong>Título:</strong> {task.title}</p>
-      <p><strong>Estado:</strong> {task.completed ? '✅ Completada' : '❌ Pendiente'}</p>
-      <p><strong>Creada por usuario ID:</strong> {task.userId}</p>
-      <Link to="/">Volver al inicio</Link>
-    </div>
+    <PageWrapper>
+      <h2>Detalles de la Tarea</h2>
+
+      <div className="task-details"> {/* clase para aplicar estilos */}
+        <p><strong>Título:</strong> {task.title}</p>
+        <p><strong>Estado:</strong> {task.completed ? '✅ Completada' : '❌ Pendiente'}</p>
+        <p><strong>ID del Usuario:</strong> {task.userId}</p>
+        <p><strong>ID de la Tarea:</strong> {task.id}</p>
+      </div>
+
+      {/* Enlace para regresar al Home */}
+      <Link to="/" className="btn">Volver al inicio</Link>
+    </PageWrapper>
   )
 }
 

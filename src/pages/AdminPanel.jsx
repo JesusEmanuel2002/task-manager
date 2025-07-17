@@ -1,64 +1,52 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { deleteUser } from '../redux/userSlice'
-import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { deleteUser, promoteToAdmin } from '../redux/userSlice'
+import PageWrapper from '../components/PageWrapper'
 
+// Página accesible solo para usuarios administradores permite ver, eliminar y promover usuarios registrados
 const AdminPanel = () => {
-    const users = useSelector((state) => state.user.users)
-    const currentUser = useSelector((state) => state.user.currentUser)
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-    // Verificar si es admin
-    if (!currentUser || currentUser.role !== 'admin') {
-        return (
-            <div>
-                <h2>Acceso denegado</h2>
-                <Link to="/">Volver al inicio</Link>
-            </div>
-        )
+  const users = useSelector((state) => state.user.users)
+  const currentUser = useSelector((state) => state.user.currentUser)
+
+  // Maneja la eliminación de un usuario
+  const handleDelete = (userId) => {
+    if (window.confirm('¿Estás seguro de eliminar este usuario?')) {
+      dispatch(deleteUser(userId))
     }
+  }
 
-    const handleDelete = (id) => {
-        if (id === currentUser.id) {
-            alert('No puedes eliminarte a ti mismo')
-            return
-        }
-        dispatch(deleteUser(id))
-    }
+  // Maneja la promoción de un usuario a admin
+  const handlePromote = (userId) => {
+    dispatch(promoteToAdmin(userId))
+  }
 
-    return (
-        <div>
-            <h1>Panel de Administración</h1>
-            <p>Usuarios registrados:</p>
-            <table border="1" cellPadding="6">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Email</th>
-                        <th>Rol</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users.map((u) => (
-                        <tr key={u.id}>
-                            <td>{u.name}</td>
-                            <td>{u.email}</td>
-                            <td>{u.role}</td>
-                            <td>
-                                {u.id !== currentUser.id && (
-                                    <button onClick={() => handleDelete(u.id)}>Eliminar</button>
-                                )}
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-            <br />
-            <Link to="/">Volver al inicio</Link>
-        </div>
-    )
+  return (
+    <PageWrapper>
+      <h2>Panel de Administración</h2>
+
+      <div className="user-list"> {/* Clase para estilo en el index.css */}
+        {users.map((user) => (
+          <div key={user.id} className="user-card">
+            <p><strong>{user.name}</strong></p>
+            <p>Email: {user.email}</p>
+            <p>Rol: {user.role}</p>
+
+            {/* Acciones evitar modificar al usuario actual */}
+            {user.id !== currentUser.id && (
+              <>
+                <button onClick={() => handleDelete(user.id)}>Eliminar</button>
+                {user.role !== 'admin' && (
+                  <button onClick={() => handlePromote(user.id)}>Hacer Admin</button>
+                )}
+              </>
+            )}
+          </div>
+        ))}
+      </div>
+    </PageWrapper>
+  )
 }
 
 export default AdminPanel
